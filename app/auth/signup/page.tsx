@@ -1,7 +1,7 @@
 "use client"
 import useSigner from '@/app/state';
 import Link from 'next/link';
-import { useRouter } from 'next/router';
+import { useRouter } from 'next/navigation';
 import React, { useState } from 'react'; // Assuming you're using React Router for navigation
 const SignupPage: React.FC = () => {
 
