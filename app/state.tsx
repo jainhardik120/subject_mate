@@ -12,25 +12,18 @@ const SignerContext = createContext<SignerContextType>({} as any);
 const useSigner = () => useContext(SignerContext);
 
 export const SignerProvider = ({ children }: { children: ReactNode }) => {
-    const [token, setTokenState] = useState(() => {
-        return window.localStorage.getItem('token') || '';
-    });
+    const [token, setTokenState] = useState("");
 
     const setToken = (newToken: string) => {
         setTokenState(newToken);
-        window.localStorage.setItem('token', newToken);
+        localStorage.setItem('token', newToken);
     };
 
     useEffect(() => {
-        const handleStorageChange = () => {
-            const newToken = window.localStorage.getItem('token') || '';
-            setTokenState(newToken);
-        };
-        window.addEventListener('storage', handleStorageChange);
-        return () => {
-            window.removeEventListener('storage', handleStorageChange);
-        };
-    }, []);
+        let value
+        value = localStorage.getItem("token") || ""
+        setTokenState(value)
+    }, [])
 
     const contextValue = { token, setToken };
     return (
