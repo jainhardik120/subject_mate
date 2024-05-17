@@ -31,7 +31,7 @@ const Dashboard: React.FC = () => {
         };
 
         fetchData();
-    }, []);
+    }, [token]);
 
     if (loading) {
         return <div>Loading...</div>;
