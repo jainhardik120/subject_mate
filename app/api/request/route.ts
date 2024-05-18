@@ -23,9 +23,7 @@ export async function GET(request: Request) {
         // Fetch requests for the student from the database
         const { rows: requestRows } = await sql`
             SELECT 
-            requests.id, 
-            requests.category_id,
-            requests.subject_id,
+            requests.*, 
             categories.category_name, 
             subjects.subject_name 
             FROM 
@@ -37,7 +35,7 @@ export async function GET(request: Request) {
             WHERE 
                 requests.student_id = ${studentId};
         `;
-        // Fetch preferences with subject name for each request
+
         const requestsWithPreferences = await Promise.all(requestRows.map(async (row: any) => {
             const { id: requestId } = row;
             const { rows: preferenceRows } = await sql`

@@ -11,7 +11,7 @@ export async function POST(request: Request) {
         if (!currentRequest.rows.length) {
             throw new Error("Request not found");
         }
-        const { subject_id } = currentRequest.rows[0];
+        const { subject_id, category_id } = currentRequest.rows[0];
         const matchedRequests = await sql`
         SELECT 
         requests.*, 
@@ -34,6 +34,7 @@ export async function POST(request: Request) {
         auth ON requests.student_id = auth.id
     WHERE 
         requests.id != ${requestId}
+        AND requests.category_id = ${category_id}
         AND EXISTS (
             SELECT 1 FROM preferences
             WHERE request_id = requests.id 

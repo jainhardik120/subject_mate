@@ -33,6 +33,15 @@ CREATE TABLE requests (
     FOREIGN KEY (category_id) REFERENCES categories(id) ON DELETE CASCADE,
     FOREIGN KEY (subject_id) REFERENCES subjects(id) ON DELETE CASCADE
 );
+
+ALTER TABLE requests
+ADD COLUMN processed BOOLEAN DEFAULT FALSE;
+
+ALTER TABLE requests
+ADD COLUMN other_std_id INTEGER,
+ADD CONSTRAINT fk_other_std_id FOREIGN KEY (other_std_id) REFERENCES auth(id) ON DELETE SET NULL;
+
+
 CREATE TABLE preferences (
     id SERIAL PRIMARY KEY,
     request_id INTEGER NOT NULL,
