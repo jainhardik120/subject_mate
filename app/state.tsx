@@ -17,12 +17,16 @@ export const SignerProvider = ({ children }: { children: ReactNode }) => {
     const setToken = (newToken: string) => {
         setTokenState(newToken);
         if (typeof window !== "undefined" && window.localStorage) {
-            window.localStorage.setItem('token', newToken);
+            if (newToken.length === 0) {
+                window.localStorage.removeItem('token');
+            } else {
+                window.localStorage.setItem('token', newToken);
+            }
         }
     };
 
     useEffect(() => {
-        if (typeof window!== "undefined" && window.localStorage) {
+        if (typeof window !== "undefined" && window.localStorage) {
             const value = window.localStorage.getItem("token") || "";
             console.log(value);
             setTokenState(value);

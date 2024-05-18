@@ -22,9 +22,12 @@ export default function RootLayout({
     <html lang="en">
       <body className={inter.className}>
         <SignerProvider>
-          <NavBar/>
-          {children}
-          <ToastContainer
+          <div className="app-container">
+            <NavBar />
+            <div className="app-content ">
+              {children}
+            </div>
+            <ToastContainer
               position="bottom-center"
               autoClose={1000}
               hideProgressBar
@@ -37,6 +40,7 @@ export default function RootLayout({
               theme="light"
               transition={Slide}
             />
+          </div>
         </SignerProvider >
       </body>
     </html>

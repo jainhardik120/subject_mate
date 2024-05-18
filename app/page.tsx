@@ -41,7 +41,7 @@ export default function Home() {
         <p className="leading-relaxed">And voila! You can contact them on the spot!</p>
       </div>
       </div>
-    {token ? (
+    {(token && token.length > 0) ? (
       <button
         onClick={goToDashboard}
         className="w-full py-3 px-6 bg-indigo-500 text-white rounded-md shadow-md hover:bg-indigo-600 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition-transform transform hover:scale-105"

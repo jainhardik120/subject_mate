@@ -5,8 +5,10 @@ import React, { useEffect, useState } from 'react';
 import RequestList, { GetRequestsResponse, Request as SwapRequest } from './RequestList';
 import Popup from './Popup';
 import { toast } from 'react-toastify';
+import { useRouter } from 'next/navigation';
 
 const Dashboard: React.FC = () => {
+    const router = useRouter();
     const { token } = useSigner();
     const [requests, setRequests] = useState<SwapRequest[]>([]);
     const [loading, setLoading] = useState<boolean>(true);
@@ -41,6 +43,12 @@ const Dashboard: React.FC = () => {
     };
 
     useEffect(() => {
+        if (!token || (token && token.length === 0)) {
+            router.push("/");
+        }
+    }, [token]);
+
+    useEffect(() => {
         fetchData(token as string);
     }, [token]);
 
@@ -50,8 +58,8 @@ const Dashboard: React.FC = () => {
                 <div>Loading...</div>
             }
             {!loading &&
-                <div className="relative h-screen">
-                    <RequestList requests={requests} refresh={()=>{
+                <div>
+                    <RequestList requests={requests} refresh={() => {
                         fetchData(token as string);
                     }} />
                     <button
