@@ -49,8 +49,6 @@ export async function POST(request: Request) {
         );
     
 `;
-
-
         return Response.json({ matchedRequests: matchedRequests.rows });
     } catch (error) {
         return ErrorResponse(error, 500);
