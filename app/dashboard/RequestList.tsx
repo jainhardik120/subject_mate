@@ -101,7 +101,7 @@ const RequestList: React.FC<RequestListProps> = ({ requests, refresh }) => {
     router.push(`/dashboard/match/${requestId}`);
   };
   return (
-    <div>
+    <div className="overflow-x-auto">
       <table className="min-w-full divide-y divide-gray-200">
         <thead className="bg-gray-50">
           <tr>
