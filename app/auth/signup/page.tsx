@@ -122,16 +122,19 @@ const SignupPage: React.FC = () => {
                         </div>
                         <div>
                             <label htmlFor="nextSemester" className="sr-only">Next Semester</label>
-                            <input
+                            <select
                                 id="nextSemester"
                                 name="nextSemester"
-                                type="number"
                                 required
-                                className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
-                                placeholder="Next Semester"
                                 value={nextSemester}
                                 onChange={(e) => setNextSemester(e.target.value)}
-                            />
+                                className="block w-full px-3 py-2 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                            >
+                                <option value="">Select Next Semester</option>
+                                <option value="5">5</option>
+                                <option value="7">7</option>
+                            </select>
+
                         </div>
                         <div>
                             <label htmlFor="branch" className="sr-only">Branch</label>

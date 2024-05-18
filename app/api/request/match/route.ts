@@ -1,7 +1,9 @@
 import { CheckToken, ErrorResponse } from '@/app/helpers';
 import { sql } from '@vercel/postgres';
+import { unstable_noStore as noStore } from 'next/cache';
 
 export async function POST(request: Request) {
+    noStore();
     try {
         const { enrollment } = CheckToken(request);
         const { requestId } = await request.json();

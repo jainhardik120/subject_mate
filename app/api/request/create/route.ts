@@ -1,6 +1,6 @@
 import { CheckToken, ErrorResponse } from '@/app/helpers';
 import { sql } from '@vercel/postgres';
-
+import { unstable_noStore as noStore } from 'next/cache';
 interface RequestBody {
     category_id: number;
     subject_id: number;
@@ -8,6 +8,7 @@ interface RequestBody {
 }
 
 export async function POST(request: Request) {
+    noStore();
     try {
         // Extract enrollment of the student from the request
         const { enrollment } = CheckToken(request);

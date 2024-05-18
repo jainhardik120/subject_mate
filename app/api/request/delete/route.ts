@@ -1,7 +1,8 @@
 import { CheckToken, ErrorResponse, SuccessResponse } from '@/app/helpers';
 import { sql } from '@vercel/postgres';
-
+import { unstable_noStore as noStore } from 'next/cache';
 export async function DELETE(request: Request) {
+  noStore();
   try {
     const { enrollment } = CheckToken(request);
     const { requestId } = await request.json();
