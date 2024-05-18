@@ -214,7 +214,7 @@ const RequestList: React.FC<RequestListProps> = ({ requests }) => {
 
                 {(selectedAction === 2) && (
                   <>
-                    <label htmlFor="otherEnrollment" className="block text-sm font-medium text-gray-700 mt-4">Enter Other Student's Enrollment</label>
+                    <label htmlFor="otherEnrollment" className="block text-sm font-medium text-gray-700 mt-4">Enter Other Student Enrollment</label>
                     <div className="mt-1">
                       <input
                         type="text"
