@@ -27,9 +27,10 @@ export type GetRequestsResponse = {
 
 export type RequestListProps = {
   requests: Request[];
+  refresh : () => void;
 };
 
-const RequestList: React.FC<RequestListProps> = ({ requests }) => {
+const RequestList: React.FC<RequestListProps> = ({ requests, refresh }) => {
   const [otherEnrollment, setOtherEnrollment] = useState("");
   const [selectedRequest, setSelectedRequest] = useState<Request | null>(null);
   const [selectedAction, setSelectedAction] = useState<number | null>(null); // Initialize with null or a default value
@@ -77,6 +78,7 @@ const RequestList: React.FC<RequestListProps> = ({ requests }) => {
     } finally {
       setSelectedRequest(null);
     }
+    refresh();
   };
 
 

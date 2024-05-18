@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import { SignerProvider } from "./state";
-import { ToastContainer } from "react-toastify";
+import { Slide, ToastContainer } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
 
 const inter = Inter({ subsets: ["latin"] });
@@ -22,7 +22,19 @@ export default function RootLayout({
       <body className={inter.className}>
         <SignerProvider>
           {children}
-        <ToastContainer />
+          <ToastContainer
+              position="bottom-center"
+              autoClose={1000}
+              hideProgressBar
+              newestOnTop={false}
+              closeOnClick
+              rtl={false}
+              pauseOnFocusLoss
+              draggable
+              pauseOnHover
+              theme="light"
+              transition={Slide}
+            />
         </SignerProvider >
       </body>
     </html>

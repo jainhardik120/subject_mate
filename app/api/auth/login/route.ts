@@ -32,7 +32,7 @@ export async function POST(request: Request) {
     const token = jwt.sign(
       { enrollment: user.enrollment, email: user.email },
       JWT_SECRET,
-      { expiresIn: '1h' } // Token validity period
+      { expiresIn: '30d' } // Token validity period
     );
 
     // Return success response with the token

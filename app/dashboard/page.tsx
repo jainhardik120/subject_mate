@@ -15,31 +15,33 @@ const Dashboard: React.FC = () => {
     const togglePopup = () => {
         setIsOpen(prev => !prev);
     };
-    useEffect(() => {
-        const fetchData = async () => {
-            setLoading(true);
-            try {
-                const response = await fetch('/api/request', {
-                    headers: {
-                        Authorization: `Bearer ${token}`
-                    }
-                });
-                if (!response.ok) {
-                    const body = await response.json();
-                    toast.error(body.error);
-                } else {
-                    const data: GetRequestsResponse = await response.json();
-                    setRequests(data.requests);
-                }
-            } catch (error: any) {
-                toast.error(error.message);
-            } finally {
-                setLoading(false);
-            }
-        };
-        if (token != null && token.length > 0) {
-            fetchData();
+    const fetchData = async (ttoken: string) => {
+        if (!(ttoken != null && ttoken.length > 0)) {
+            return;
         }
+        setLoading(true);
+        try {
+            const response = await fetch('/api/request', {
+                headers: {
+                    Authorization: `Bearer ${ttoken}`
+                }
+            });
+            if (!response.ok) {
+                const body = await response.json();
+                toast.error(body.error);
+            } else {
+                const data: GetRequestsResponse = await response.json();
+                setRequests(data.requests);
+            }
+        } catch (error: any) {
+            toast.error(error.message);
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    useEffect(() => {
+        fetchData(token as string);
     }, [token]);
 
     return (
@@ -49,7 +51,9 @@ const Dashboard: React.FC = () => {
             }
             {!loading &&
                 <div className="relative h-screen">
-                    <RequestList requests={requests} />
+                    <RequestList requests={requests} refresh={()=>{
+                        fetchData(token as string);
+                    }} />
                     <button
                         onClick={togglePopup}
                         className="fixed bottom-4 right-4 z-10 bg-blue-500 text-white rounded-full p-4 shadow-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50"
