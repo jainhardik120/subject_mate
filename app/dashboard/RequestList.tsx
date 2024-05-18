@@ -54,7 +54,8 @@ const RequestList: React.FC<RequestListProps> = ({ requests }) => {
         }
       } else if (selectedAction === 2) {
         if (otherEnrollment.trim() === '') {
-          throw new Error('Other student enrollment cannot be empty');
+          toast.error('Please enter other enrollment number');
+          return;
         }
         const response = await fetch(`/api/request/final`, {
           method: 'POST',

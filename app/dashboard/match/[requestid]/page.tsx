@@ -2,6 +2,7 @@
 
 import useSigner from '@/app/state';
 import React, { useEffect, useState } from 'react';
+import { toast } from 'react-toastify';
 type MatchedRequest = {
   id: number;
   student_id: number;
@@ -116,7 +117,6 @@ const MatchedRequestsTable: React.FC<MatchedRequestsTableProps> = ({ matchedRequ
 const Page: React.FC<{ params: { requestid: string } }> = ({ params }) => {
   const [matchedRequests, setMatchedRequests] = useState<any[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
-  const [error, setError] = useState<string | null>(null);
   const { token } = useSigner();
   useEffect(() => {
     const fetchData = async () => {
@@ -130,13 +130,15 @@ const Page: React.FC<{ params: { requestid: string } }> = ({ params }) => {
           body: JSON.stringify({ requestId: params.requestid })
         });
         if (!response.ok) {
-          throw new Error('Failed to fetch data');
+          const body = await response.json();
+          toast.error(body.error);
+        } else {
+          const data = await response.json();
+          setMatchedRequests(data.matchedRequests);
         }
-        const data = await response.json();
-        setMatchedRequests(data.matchedRequests);
         setLoading(false);
       } catch (error: any) {
-        setError(error.message);
+        toast.error(error.message);
         setLoading(false);
       }
     };
@@ -144,18 +146,15 @@ const Page: React.FC<{ params: { requestid: string } }> = ({ params }) => {
     fetchData();
   }, [params.requestid, token]);
 
-  if (loading) {
-    return <div>Loading...</div>;
-  }
-
-  if (error) {
-    return <div>Error: {error}</div>;
-  }
-
   return (
-    <div>
-      <MatchedRequestsTable matchedRequests={matchedRequests} />
-    </div>
+    <>
+      {loading &&
+        <div>Loading...</div>
+      }
+      {!loading && <div>
+        <MatchedRequestsTable matchedRequests={matchedRequests} />
+      </div>}
+    </>
   );
 };
 

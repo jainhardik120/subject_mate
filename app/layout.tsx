@@ -19,10 +19,12 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <SignerProvider>
-        <body className={inter.className}>{children}</body>
-        <ToastContainer/>
-      </SignerProvider >
+      <body className={inter.className}>
+        <SignerProvider>
+          {children}
+        <ToastContainer />
+        </SignerProvider >
+      </body>
     </html>
   );
 }

@@ -26,17 +26,20 @@ const Dashboard: React.FC = () => {
                 });
                 if (!response.ok) {
                     const body = await response.json();
-                    throw new Error(body.message || 'Failed to fetch data');
+                    toast.error(body.error);
+                } else {
+                    const data: GetRequestsResponse = await response.json();
+                    setRequests(data.requests);
                 }
-                const data: GetRequestsResponse = await response.json();
-                setRequests(data.requests);
             } catch (error: any) {
                 toast.error(error.message);
             } finally {
                 setLoading(false);
             }
         };
-        fetchData();
+        if (token != null && token.length > 0) {
+            fetchData();
+        }
     }, [token]);
 
     return (

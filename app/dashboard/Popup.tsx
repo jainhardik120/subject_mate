@@ -34,10 +34,15 @@ const Popup: React.FC<PopupProps> = ({ onClose }) => {
             Authorization: `Bearer ${token}`
           }
         });
-        const data = await response.json();
-        setCategories(data);
-      } catch (error) {
-        console.error('Error fetching categories:', error);
+        if (!response.ok) {
+          const body = await response.json();
+          toast.error(body.error);
+        } else {
+          const data = await response.json();
+          setCategories(data);
+        }
+      } catch (error: any) {
+        toast.error(error.toString());
       }
     };
     fetchCategories();
@@ -50,10 +55,15 @@ const Popup: React.FC<PopupProps> = ({ onClose }) => {
           Authorization: `Bearer ${token}`
         }
       });
-      const data = await response.json();
-      setSubjects(data.subjects);
-    } catch (error) {
-      console.error('Error fetching subjects:', error);
+      if (!response.ok) {
+        const body = await response.json();
+        toast.error(body.error);
+      } else {
+        const data = await response.json();
+        setSubjects(data.subjects);
+      }
+    } catch (error: any) {
+      toast.error(error.toString());
     }
   };
 
