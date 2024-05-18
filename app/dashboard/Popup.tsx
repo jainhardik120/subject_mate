@@ -29,7 +29,7 @@ const Popup: React.FC<PopupProps> = ({ onClose }) => {
   useEffect(() => {
     const fetchCategories = async () => {
       try {
-        const response = await fetch('http://localhost:3000/api/subjects/categories', {
+        const response = await fetch('/api/subjects/categories', {
           headers: {
             Authorization: `Bearer ${token}`
           }
@@ -50,7 +50,7 @@ const Popup: React.FC<PopupProps> = ({ onClose }) => {
 
   const fetchSubjects = async (categoryId: string) => {
     try {
-      const response = await fetch(`http://localhost:3000/api/subjects/${categoryId}`, {
+      const response = await fetch(`/api/subjects/${categoryId}`, {
         headers: {
           Authorization: `Bearer ${token}`
         }
