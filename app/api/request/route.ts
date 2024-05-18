@@ -1,7 +1,10 @@
 import { CheckToken, ErrorResponse } from '@/app/helpers';
 import { sql } from '@vercel/postgres';
+import { unstable_noStore as noStore } from 'next/cache';
+
 
 export async function GET(request: Request) {
+    noStore();
     try {
         // Extract enrollment of the student from the request
         const { enrollment } = CheckToken(request);
@@ -34,8 +37,6 @@ export async function GET(request: Request) {
             WHERE 
                 requests.student_id = ${studentId};
         `;
-        console.log(requestRows);
-
         // Fetch preferences with subject name for each request
         const requestsWithPreferences = await Promise.all(requestRows.map(async (row: any) => {
             const { id: requestId } = row;

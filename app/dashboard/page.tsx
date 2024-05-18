@@ -3,15 +3,21 @@
 import useSigner from '@/app/state';
 import React, { useEffect, useState } from 'react';
 import RequestList, { GetRequestsResponse, Request as SwapRequest } from './RequestList';
+import Popup from './Popup';
+import { toast } from 'react-toastify';
 
 const Dashboard: React.FC = () => {
-    const { token, setToken } = useSigner();
+    const { token } = useSigner();
     const [requests, setRequests] = useState<SwapRequest[]>([]);
-    const [error, setError] = useState<string | null>(null);
     const [loading, setLoading] = useState<boolean>(true);
+    const [isOpen, setIsOpen] = useState(false);
 
+    const togglePopup = () => {
+        setIsOpen(prev => !prev);
+    };
     useEffect(() => {
         const fetchData = async () => {
+            setLoading(true);
             try {
                 const response = await fetch('/api/request', {
                     headers: {
@@ -19,32 +25,51 @@ const Dashboard: React.FC = () => {
                     }
                 });
                 if (!response.ok) {
-                    throw new Error('Failed to fetch data');
+                    const body = await response.json();
+                    throw new Error(body.message || 'Failed to fetch data');
                 }
                 const data: GetRequestsResponse = await response.json();
                 setRequests(data.requests);
-                setLoading(false);
             } catch (error: any) {
-                setError(error.message);
+                toast.error(error.message);
+            } finally {
                 setLoading(false);
             }
         };
-
         fetchData();
     }, [token]);
 
-    if (loading) {
-        return <div>Loading...</div>;
-    }
-
-    if (error) {
-        return <div>Error: {error}</div>;
-    }
-
     return (
-        <div>
-            <RequestList requests={requests} />
-        </div>
+        <>
+            {loading &&
+                <div>Loading...</div>
+            }
+            {!loading &&
+                <div className="relative h-screen">
+                    <RequestList requests={requests} />
+                    <button
+                        onClick={togglePopup}
+                        className="fixed bottom-4 right-4 z-10 bg-blue-500 text-white rounded-full p-4 shadow-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50"
+                    >{ }
+                        <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            className="h-6 w-6"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke="currentColor"
+                        >
+                            <path
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                strokeWidth={2}
+                                d="M12 6v6m0 0v6m0-6h6m-6 0H6"
+                            />
+                        </svg>
+                    </button>
+                    {isOpen && <Popup onClose={togglePopup} />}
+                </div>
+            }
+        </>
     );
 };
 

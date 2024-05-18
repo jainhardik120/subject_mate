@@ -1,9 +1,8 @@
 import { CheckToken, ErrorResponse } from '@/app/helpers';
 import { sql } from '@vercel/postgres';
 
-export async function POST(request : Request) {
+export async function GET(request: Request) {
   try {
-    // Extract enrollment of the student from the request
     const { enrollment } = CheckToken(request);
 
     const authQuery = await sql`
@@ -12,13 +11,20 @@ export async function POST(request : Request) {
     const currentSemester = authQuery.rows[0]?.next_semester;
 
     if (!currentSemester) {
-      throw new Error('Student not found or semester not provided');
+      return ErrorResponse('Student not found or semester not provided', 404);
     }
-
-    // Query the database to retrieve the list of categories for the current semester
     const categoriesQuery = await sql`
-      SELECT * FROM categories WHERE semester = ${currentSemester}
-    `;
+    SELECT *
+    FROM categories
+    WHERE semester = ${currentSemester}
+    AND id NOT IN (
+      SELECT category_id
+      FROM requests
+      WHERE student_id = (
+        SELECT id FROM auth WHERE enrollment = ${enrollment}
+      )
+    )
+  `;
     const categories = categoriesQuery.rows;
 
     return Response.json(categories);
