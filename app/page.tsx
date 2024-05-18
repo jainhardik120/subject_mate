@@ -57,7 +57,7 @@ export default function Home() {
         Go to Login
       </button>
       <button
-      onClick={goToSignUp}
+      onClick={goToSignup}
       className="w-full py-3 px-6 bg-black text-white rounded-md shadow-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-transform transform hover:scale-105"
     >
       Go to SignUp
